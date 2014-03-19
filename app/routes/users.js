@@ -38,3 +38,16 @@ exports.login = function(req, res){
   });
 };
 
+exports.show = function(req, res){
+  User.findById(req.params.id, function(user){
+    res.render('users/show', {title:'Super Cool User', user:user});
+  });
+};
+
+exports.friend = function(req, res){
+  User.findById(req.params.id, function(user){
+    user.addFriend(req.params.friend, function(){
+      res.redirect('users/show/'+req.params.id);
+    });
+  });
+};

@@ -2,11 +2,11 @@
 
 'use strict';
 
-process.env.DBNAME = 'airbnb-test';
+process.env.DBNAME = 'ping-me-test';
 var request = require('supertest');
 var app = require('../../app/app');
 var expect = require('chai').expect;
-var User;
+var User, u;
 
 describe('user', function(){
   before(function(done){
@@ -20,8 +20,8 @@ describe('user', function(){
 
   beforeEach(function(done){
     global.nss.db.dropDatabase(function(err, result){
-      var u1 = new User({email:'test@nomail.com', password:'1234'});
-      u1.register(function(){
+      u = new User({email:'test@nomail.com', password:'1234'});
+      u.register(function(){
         done();
       });
     });
@@ -112,5 +112,20 @@ describe('user', function(){
       });
     });
   });
+  describe('GET /users/:id', function(){
+    it('should redirect to the show page', function(done){
+      request(app)
+      .get('/users/'+u._id)
+      .expect(200, done);
+    });
+  });
+  describe('POST /users/:id/:friend', function(){
+    it('should add friend and redirect to user show page', function(done){
+      request(app)
+      .post('/users/'+u._id+'/'+u._id)
+      .expect(302, done);
+    });
+  });
+
 });
 

@@ -2,7 +2,7 @@
 
 'use strict';
 
-process.env.DBNAME = 'airbnb-test';
+process.env.DBNAME = 'ping-me-test';
 var expect = require('chai').expect;
 var User;
 var Mongo = require('mongodb');
@@ -31,6 +31,8 @@ describe('User', function(){
       var u1 = new User({email:'julius@nomail.com', password:'1234'});
       expect(u1.email).to.equal('julius@nomail.com');
       expect(u1.password).to.equal('1234');
+      expect(u1.friends).to.have.length(0);
+      expect(u1.friends).to.be.instanceof(Array);
       done();
     });
   });
@@ -81,4 +83,55 @@ describe('User', function(){
       });
     });
   });
+  describe('.findById', function(){
+    it('should find user by Email', function(done){
+      var u1 = new User({email:'rjfryman@nomail.com', password:'1234'});
+      u1.register(function(err){
+        User.findById(u1._id.toString(), function(record){
+          expect(u1.email).to.equal('rjfryman@nomail.com');
+          expect(record.email).to.equal('rjfryman@nomail.com');
+          expect(record._id).to.deep.equal(u1._id);
+          done();
+        });
+      });
+    });
+  });
+  describe('.findByEmail', function(){
+    it('should find user by Email', function(done){
+      var u1 = new User({email:'rjfryman@nomail.com', password:'1234'});
+      u1.register(function(err){
+        var email = u1.email;
+        User.findByEmail(email, function(record){
+          expect(record.email).to.equal(email);
+          done();
+        });
+      });
+    });
+    it('should not return an email PRIVACY', function(done){
+      var u1 = new User({email:'rjfryman@nomail.com', password:'1234'});
+      u1.register(function(err){
+        var email = 'rjfryman@yesmail.com';
+        User.findByEmail(email, function(record){
+          expect(record).to.be.null;
+          done();
+        });
+      });
+    });
+  });
+  describe('#addFriend', function(){
+    it('should add a friend to friend array', function(done){
+      var u1 = new User({email:'julius@nomail.com', password:'1234'});
+      var u2 = new User({email:'robert@nomail.com', password:'1234'});
+      u1.register(function(err){
+        u2.register(function(err){
+          u1.addFriend(u2._id, function(){
+            expect(u1.friends).to.have.length(1);
+            expect(u1.friends).to.be.instanceof(Array);
+            done();
+          });
+        });
+      });
+    });
+  });
+
 });
