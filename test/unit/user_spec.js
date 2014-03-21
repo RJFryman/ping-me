@@ -28,7 +28,8 @@ describe('User', function(){
 
   describe('new', function(){
     it('should create a new User object', function(done){
-      var u1 = new User({email:'julius@nomail.com', password:'1234'});
+      var u1 = new User({username:'rjfryman', email:'julius@nomail.com', password:'1234'});
+      expect(u1.username).to.equal('rjfryman');
       expect(u1.email).to.equal('julius@nomail.com');
       expect(u1.password).to.equal('1234');
       expect(u1.friends).to.have.length(0);
@@ -93,6 +94,12 @@ describe('User', function(){
           expect(record._id).to.deep.equal(u1._id);
           done();
         });
+      });
+    });
+    it('should not find a user by id', function(done){
+      User.findById('123456789012', function(record){
+        expect(record).to.be.null;
+        done();
       });
     });
   });

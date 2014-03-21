@@ -3,7 +3,7 @@
 var User = require('../models/user');
 
 exports.fresh = function(req, res){
-  res.render('users/fresh', {title: 'Register New Users'});
+  res.render('users/fresh');
 };
 
 exports.create = function(req, res){
@@ -12,13 +12,13 @@ exports.create = function(req, res){
     if(user._id){
       res.redirect('/');
     }else{
-      res.render('users/fresh', {title: 'Register Here'});
+      res.render('users/fresh');
     }
   });
 };
 
 exports.auth = function(req, res){
-  res.render('users/auth', {title: 'Login Users'});
+  res.render('users/auth');
 };
 
 exports.login = function(req, res){
@@ -32,7 +32,7 @@ exports.login = function(req, res){
       });
     }else{
       req.session.destroy(function(){
-        res.render('users/auth', {title: 'Login Users'});
+        res.render('users/auth');
       });
     }
   });
@@ -40,7 +40,7 @@ exports.login = function(req, res){
 
 exports.show = function(req, res){
   User.findById(req.params.id, function(user){
-    res.render('users/show', {title:'Super Cool User', user:user});
+    res.render('users/show', { user:user});
   });
 };
 

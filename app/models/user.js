@@ -9,6 +9,7 @@ var _ = require('lodash');
 module.exports = User;
 
 function User(data){
+  this.username = data.username;
   this.email = data.email;
   this.password = data.password;
   this.friends = [];
