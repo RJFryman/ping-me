@@ -22,6 +22,7 @@ function load(app, fn){
   app.post('/register', d, users.create);
   app.get('/login', d, users.auth);
   app.post('/login', d, users.login);
+  app.get('/logout', d, users.logout);
   app.get('/users/:id', d, users.show);
   app.post('/users/:id/:friend', d, users.friend);
   app.post('/ping', d, pings.create);

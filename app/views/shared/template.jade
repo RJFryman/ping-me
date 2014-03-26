@@ -11,9 +11,15 @@ html(class='no-js', lang='en')
     script(src='/js/vendor/modernizr.js')
   body
     ul.breadcrumbs
-      li: a(href="/") Home
-      li: a(href="/register") Register
-      li: a(href="/login") Login
+      if user
+        li: a(href="/") Pings
+        li: a(href="/") Friends
+        li: a(href="/users/"+user._id.toString())= user.username
+        li: a(href="/logout") Log Out
+      if !user
+        li: a(href="/") Home
+        li: a(href="/register") Register
+        li: a(href="/login") Login
     .row
       .small-12.columns
         block content
@@ -24,4 +30,5 @@ html(class='no-js', lang='en')
     script(src='/js/vendor/moment.js')
     script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBd4znPfZoay_3_7wzlk5nbDw4K2NiZI0Y&sensor=true')
     script(src='/js/source/main.js')
+    block script
 

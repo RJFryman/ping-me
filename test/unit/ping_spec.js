@@ -22,9 +22,9 @@ describe('Ping', function(){
 
   beforeEach(function(done){
     global.nss.db.dropDatabase(function(err, result){
-      u1 = new User({email:'julius@nomail.com', password:'1234'});
+      u1 = new User({username:'julius', email:'julius@nomail.com', password:'1234'});
       u1.register(function(err){
-        u2 = new User({email:'rjfryman@nomail.com', password:'1234'});
+        u2 = new User({uesrname:'rjfryman', email:'rjfryman@nomail.com', password:'1234'});
         u2.register(function(err){
           done();
         });

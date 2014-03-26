@@ -91,8 +91,14 @@ function findByEmailAndPassword(email, password, fn){
 function insert(user, fn){
   users.findOne({email:user.email}, function(err, userFound){
     if(!userFound){
-      users.insert(user, function(err, record){
-        fn(err);
+      users.findOne({username:user.username}, function(err, foundUser){
+        if(!foundUser){
+          users.insert(user, function(err, record){
+            fn(err);
+          });
+        }else{
+          fn();
+        }
       });
     }else{
       fn();

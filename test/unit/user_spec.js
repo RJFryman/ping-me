@@ -40,7 +40,7 @@ describe('User', function(){
 
   describe('#register', function(){
     it('should register a new User object', function(done){
-      var u1 = new User({email:'rfjulius@nomail.com', password:'1234'});
+      var u1 = new User({username:'rjfryman', email:'rfjulius@nomail.com', password:'1234'});
       u1.register(function(err, body){
         expect(err).to.not.be.ok;
         expect(u1.password).to.have.length(60);
@@ -86,7 +86,7 @@ describe('User', function(){
   });
   describe('.findById', function(){
     it('should find user by Email', function(done){
-      var u1 = new User({email:'rjfryman@nomail.com', password:'1234'});
+      var u1 = new User({username:'rjfryman', email:'rjfryman@nomail.com', password:'1234'});
       u1.register(function(err){
         User.findById(u1._id.toString(), function(record){
           expect(u1.email).to.equal('rjfryman@nomail.com');
@@ -105,7 +105,7 @@ describe('User', function(){
   });
   describe('.findByEmail', function(){
     it('should find user by Email', function(done){
-      var u1 = new User({email:'rjfryman@nomail.com', password:'1234'});
+      var u1 = new User({username:'rjfryman', email:'rjfryman@nomail.com', password:'1234'});
       u1.register(function(err){
         var email = u1.email;
         User.findByEmail(email, function(record){

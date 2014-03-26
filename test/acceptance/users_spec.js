@@ -7,6 +7,7 @@ var request = require('supertest');
 var app = require('../../app/app');
 var expect = require('chai').expect;
 var User, u;
+var cookie;
 
 describe('user', function(){
   before(function(done){
@@ -20,9 +21,16 @@ describe('user', function(){
 
   beforeEach(function(done){
     global.nss.db.dropDatabase(function(err, result){
-      u = new User({email:'test@nomail.com', password:'1234'});
+      u = new User({username:'test', email:'test@nomail.com', password:'1234'});
       u.register(function(){
-        done();
+        request(app)
+        .post('/login')
+        .field('email', 'test@nomail.com')
+        .field('password', '1234')
+        .end(function(err, res){
+          cookie = res.headers['set-cookie'];
+          done();
+        });
       });
     });
   });
@@ -42,6 +50,7 @@ describe('user', function(){
     it('should allow a user to register', function(done){
       request(app)
       .post('/register')
+      .field('username', 'rjfryman')
       .field('email', 'robert.fryman@gmail.com')
       .field('password', '1234')
       .field('role', 'host')
@@ -116,6 +125,7 @@ describe('user', function(){
     it('should redirect to the show page', function(done){
       request(app)
       .get('/users/'+u._id)
+      .set('cookie', cookie)
       .expect(200, done);
     });
   });
@@ -123,6 +133,7 @@ describe('user', function(){
     it('should add friend and redirect to user show page', function(done){
       request(app)
       .post('/users/'+u._id+'/'+u._id)
+      .set('cookie', cookie)
       .expect(302, done);
     });
   });
